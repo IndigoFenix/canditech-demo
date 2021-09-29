@@ -3,7 +3,8 @@ module.exports = (sequelize, Sequelize) => {
         "id": { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
         "user_id": { type: Sequelize.INTEGER },
         "question_id": { type: Sequelize.INTEGER },
-        "data": { type: Sequelize.TEXT }
+        "data": { type: Sequelize.TEXT },
+        "points": { type: Sequelize.FLOAT }
     },{
         indexes: [
             {

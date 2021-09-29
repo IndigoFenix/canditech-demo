@@ -49,6 +49,23 @@ exports.get = async(user_id,question_id) => {
 	}
 };
 
+exports.update = async(id,body) => {
+	let update = {};
+	let allowed_fields = ['points'];
+	for (let i=0;i<allowed_fields.length;i++){
+		if (body[allowed_fields[i]] !== undefined){
+			update[allowed_fields[i]] = body[allowed_fields[i]];
+		}
+	}
+	try {
+		let updated = await answerRepository.update({'id':id},body);
+		if (updated) return {'success':true,'response':1};
+		else return {'success':false,'error':404,'message':'Could not update'};
+	} catch (error) {
+		return {'success':false,'error':500,'message':error.message}
+	}
+};
+
 exports.delete = async(id) => {
 	if (!id) return {'success':false,'error':400,'message':'Id is required'};
 	
