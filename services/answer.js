@@ -22,24 +22,28 @@ exports.get = async(user_id,question_id) => {
 		let answer = await answerRepository.findByUserAndQuestion(user_id,question_id);
 		if (answer && question) {
             let points = '';
-            if (question.type == 'choice'){
-                let selected_answer = question.data.opts[parseInt(answer.data)];
-                if (selected_answer !== undefined){
-                    points = selected_answer.value * question.points;
-                } else {
-                    points = 0;
-                }
-            } else if (question.type == 'value') {
-                //For value questions, I would make it so each possible answer had a point value, allowing for partial credit.
-                points = 0;
-                for (let i=0;i<question.data.opts.length;i++){
-                    if (question.data.opts[i].input == answer.data){
-                        points = question.data.opts[i].value * question.points;
-                        break;
+            if (answer.points)
+                points = answer.points;
+            else {
+                if (question.type == 'choice'){
+                    let selected_answer = question.data.opts[parseInt(answer.data)];
+                    if (selected_answer !== undefined){
+                        points = selected_answer.value * question.points;
+                    } else {
+                        points = 0;
                     }
+                } else if (question.type == 'value') {
+                    //For value questions, I would make it so each possible answer had a point value, allowing for partial credit.
+                    points = 0;
+                    for (let i=0;i<question.data.opts.length;i++){
+                        if (question.data.opts[i].input == answer.data){
+                            points = question.data.opts[i].value * question.points;
+                            break;
+                        }
+                    }
+                } else {
+                    points = 'N/A';
                 }
-            } else {
-                points = 'N/A';
             }
             return {'success':true,'response':{'question':question,'answer':answer,'points':points}};
         }

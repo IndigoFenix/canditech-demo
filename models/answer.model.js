@@ -4,7 +4,7 @@ module.exports = (sequelize, Sequelize) => {
         "user_id": { type: Sequelize.INTEGER },
         "question_id": { type: Sequelize.INTEGER },
         "data": { type: Sequelize.TEXT },
-        "points": { type: Sequelize.FLOAT }
+        "points": { type: Sequelize.FLOAT, allowNull: true }
     },{
         indexes: [
             {
